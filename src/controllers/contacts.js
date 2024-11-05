@@ -3,6 +3,7 @@ import {
   getAllContacts,
   getContactById,
   addContact,
+  updateContact,
 } from '../services/contacts.js';
 import createHttpError from 'http-errors';
 
@@ -35,6 +36,16 @@ export const addContactController = async (req, res) => {
   res.status(201).json({
     status: 201,
     message: 'Successfully created a contact!',
+    data,
+  });
+};
+
+export const updateContactController = async (req, res) => {
+  const { id: _id } = req.params;
+  const data = await updateContact({ _id, payload: req.body });
+  res.json({
+    status: 200,
+    message: 'Successfully patched a contact!',
     data,
   });
 };
