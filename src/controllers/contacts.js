@@ -7,6 +7,7 @@ import {
   deleteContact,
 } from '../services/contacts.js';
 import createHttpError from 'http-errors';
+// import { addContactSchema } from '../validation/contacts.js';
 
 export const getContactsController = async (req, res) => {
   const contacts = await getAllContacts();
