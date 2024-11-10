@@ -8,9 +8,14 @@ import {
 } from '../services/contacts.js';
 import createHttpError from 'http-errors';
 // import { addContactSchema } from '../validation/contacts.js';
+import { parsePaginaionParams } from '../utils/parsePaginationParams.js';
 
 export const getContactsController = async (req, res) => {
-  const contacts = await getAllContacts();
+  const { page, perPage } = parsePaginaionParams(req.query);
+  console.log(page);
+  console.log(perPage);
+
+  const contacts = await getAllContacts(page, perPage);
   res.status(200).json({
     status: 200,
     message: 'Successfully found contacts!',
