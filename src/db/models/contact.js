@@ -31,6 +31,6 @@ const contactsSchema = new Schema(
   },
 );
 
-export const sortByList = [];
+export const sortByList = ['name', 'contactType', 'isFavourite'];
 
 export const ContactsCollection = model('contacts', contactsSchema);
