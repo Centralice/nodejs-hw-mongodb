@@ -1,4 +1,5 @@
 import { model, Schema } from 'mongoose';
+import { emailRegex } from '../../constants/users';
 
 const userSchema = new Schema(
   {
@@ -8,7 +9,7 @@ const userSchema = new Schema(
     },
     email: {
       type: String,
-      match: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+      match: emailRegex,
       unique: true,
       required: true,
     },
@@ -22,3 +23,7 @@ const userSchema = new Schema(
     versionKey: false,
   },
 );
+
+const UserCollection = model('user', userSchema);
+
+export default UserCollection;
