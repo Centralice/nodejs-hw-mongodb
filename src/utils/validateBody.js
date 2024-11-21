@@ -1,9 +1,9 @@
 import createHttpError from 'http-errors';
-import { addContactSchema } from '../validation/contacts.js';
+// import { addContactSchema } from '../validation/contacts.js';
 
 const validateBody = (schema) => {
   const func = (req, res, next) => {
-    const { error } = addContactSchema.validate(req.body, {
+    const { error } = schema.validate(req.body, {
       abortEarly: false,
     });
     if (error) {
