@@ -9,3 +9,7 @@ export const registerController = async (req, res) => {
     data,
   });
 };
+
+export const loginController = async (req, res) => {
+  const session = await authServices.login(req.body);
+};
