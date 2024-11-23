@@ -30,3 +30,7 @@ export const loginController = async (req, res) => {
     data: { accessToken },
   });
 };
+
+export const refreshSessionController = async (req, res) => {
+  const session = await authServices.refreshUserSession(req.cookies);
+};

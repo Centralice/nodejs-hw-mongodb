@@ -39,6 +39,31 @@ export const login = async ({ email, password }) => {
   });
 };
 
+export const refreshUserSession = async ({ sessionId, refreshToken }) => {
+  const session = await SessionCollection.findOne({
+    _id: sessionId,
+    refreshToken,
+  });
+  if (!session) {
+    throw createHttpError(401, 'Session not found');
+  }
+  if (Date.now() > session.refreshTokenValidUntil) {
+    throw createHttpError(401, 'Session tiken expired');
+  }
+
+  await SessionCollection.deleteOne({ userId: user._id });
+  const accessToken = randomBytes(30).toString('base64');
+  const refreshToken = randomBytes(30).toString('base64');
+
+  return SessionCollection.create({
+    userId: user._id,
+    accessToken,
+    refreshToken,
+    accessTokenValidUntil: Date.now() + accessTokenLifetime,
+    refreshTokenValidUntil: Date.now() + refreshTokenLifetime,
+  });
+};
+
 export const findSession = (filter) => SessionCollection.findOne(filter);
 
 export const findUser = (filter) => UserCollection.findOne(filter);

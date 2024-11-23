@@ -24,6 +24,10 @@ const contactsSchema = new Schema(
       required: true,
       default: 'personal',
     },
+    addedBy: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
