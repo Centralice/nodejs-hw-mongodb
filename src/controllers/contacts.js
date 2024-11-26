@@ -17,7 +17,13 @@ export const getContactsController = async (req, res) => {
   const { _id: userId } = req.user;
   filter.userId = userId;
 
-  const contacts = await getAllContacts({ page, perPage, sortBy, sortOrder, filter });
+  const contacts = await getAllContacts({
+    page,
+    perPage,
+    sortBy,
+    sortOrder,
+    filter,
+  });
   res.status(200).json({
     status: 200,
     message: 'Successfully found contacts!',
@@ -27,7 +33,8 @@ export const getContactsController = async (req, res) => {
 
 export const getContactByIdController = async (req, res) => {
   const { contactId } = req.params;
-  const contact = await getContactById(contactId);
+  const { _id: userId } = req.user;
+  const contact = await getContactById(contactId, userId);
 
   if (!contact) {
     throw createHttpError(404, 'Contact not found');
@@ -42,7 +49,7 @@ export const getContactByIdController = async (req, res) => {
 
 export const addContactController = async (req, res) => {
   const { _id: userId } = req.user;
-  const data = await addContact(...req.body, userId);
+  const data = await addContact({ ...req.body, userId });
   res.status(201).json({
     status: 201,
     message: 'Successfully created a contact!',
@@ -52,7 +59,8 @@ export const addContactController = async (req, res) => {
 
 export const updateContactController = async (req, res) => {
   const { contactId: _id } = req.params;
-  const data = await updateContact({ _id, payload: req.body });
+  const { _id: userId } = req.user;
+  const data = await updateContact({ _id, payload: req.body, userId });
 
   if (!data) {
     throw createHttpError(404, 'Contact not found');
@@ -66,7 +74,8 @@ export const updateContactController = async (req, res) => {
 
 export const deleteContactController = async (req, res) => {
   const { contactId: _id } = req.params;
-  const data = await deleteContact({ _id });
+  const { _id: userId } = req.user;
+  const data = await deleteContact({ _id, userId });
 
   if (!data) {
     throw createHttpError(404, 'Contact not found');
