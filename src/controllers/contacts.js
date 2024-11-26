@@ -1,4 +1,3 @@
-// import { ContactsCollection } from '../db/models/contact.js';
 import {
   getAllContacts,
   getContactById,
@@ -7,7 +6,6 @@ import {
   deleteContact,
 } from '../services/contacts.js';
 import createHttpError from 'http-errors';
-// import { addContactSchema } from '../validation/contacts.js';
 import { parsePaginaionParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { sortByList } from '../db/models/contact.js';
@@ -15,8 +13,11 @@ import { sortByList } from '../db/models/contact.js';
 export const getContactsController = async (req, res) => {
   const { page, perPage } = parsePaginaionParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query, sortByList);
+  const filter = req.query;
+  const { _id: userId } = req.user;
+  filter.userId = userId;
 
-  const contacts = await getAllContacts({ page, perPage, sortBy, sortOrder });
+  const contacts = await getAllContacts({ page, perPage, sortBy, sortOrder, filter });
   res.status(200).json({
     status: 200,
     message: 'Successfully found contacts!',
