@@ -8,6 +8,12 @@ import {
   refreshTokenLifetime,
 } from '../constants/users.js';
 
+import jwt from 'jsonwebtoken';
+
+import { SMTP } from '../constants/index.js';
+import { env } from '../utils/env.js';
+import { sendEmail } from '../utils/sendMail.js';
+
 const createSession = () => {
   const accessToken = randomBytes(30).toString('base64');
   const refreshToken = randomBytes(30).toString('base64');
@@ -72,6 +78,36 @@ export const refreshUserSession = async ({ sessionId, refreshToken }) => {
 
 export const logout = (sessionId) => {
   SessionCollection.deleteOne({ _id: sessionId });
+};
+
+export const requestResetToken = async (email) => {
+  const user = await UserCollection.findOne({ email });
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+
+  // const jwtSecret = env('JWT_SECRET');
+  // if (!jwtSecret) {
+  //   throw new Error('JWT_SECRET is missing!');
+  // }
+
+  const resetToken = jwt.sign(
+    {
+      sub: user._id,
+      email,
+    },
+    env('JWT_SECRET'),
+    {
+      expiresIn: '15m',
+    },
+  );
+
+  await sendEmail({
+    from: env(SMTP.SMTP_FROM),
+    to: email,
+    subject: 'Reset your password',
+    html: `<p>Click <a href="${resetToken}">here</a> to reset your password!</p>`,
+  });
 };
 
 export const findSession = (filter) => SessionCollection.findOne(filter);
