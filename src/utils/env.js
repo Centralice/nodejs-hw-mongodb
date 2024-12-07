@@ -2,8 +2,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// console.log('Loaded ENV Variables:', process.env);
-
 export function env(name, defaultValue) {
   const value = process.env[name];
 
