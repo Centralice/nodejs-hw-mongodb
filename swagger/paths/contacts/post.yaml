@@ -14,7 +14,7 @@ requestBody:
           - name
           - phoneNumber
           - contactType
-          - userId
+          # - userId
         properties:
           name:
             description: "Contact's name"
@@ -23,7 +23,7 @@ requestBody:
           phoneNumber:
             description: "Contact's phone number"
             type: string
-            example: 9379992
+            example: "9379992"
           email:
             description: "Contact's email"
             type: string

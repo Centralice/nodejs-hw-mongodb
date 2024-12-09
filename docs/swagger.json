@@ -175,8 +175,7 @@
                 "required": [
                   "name",
                   "phoneNumber",
-                  "contactType",
-                  "userId"
+                  "contactType"
                 ],
                 "properties": {
                   "name": {
@@ -187,7 +186,7 @@
                   "phoneNumber": {
                     "description": "Contact's phone number",
                     "type": "string",
-                    "example": 9379992
+                    "example": "9379992"
                   },
                   "email": {
                     "description": "Contact's email",
